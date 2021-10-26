@@ -11,6 +11,7 @@ function Registry() {
 
     const addItem = (e) => {
         e.preventDefault();
+        if(error) return;
         const tempData = [...registryData];
         tempData.push(textInput)
         setRegistryData(tempData)
@@ -22,8 +23,26 @@ function Registry() {
         if(textInput.length > 10) setError(true);
         else setError(false);   
     }, [textInput]);
-    console.log(registryData)
 
+    const removeItem = (index) => {
+        let newData = [...registryData];
+        newData.splice(index, 1)
+        setRegistryData(newData)
+    }
+
+    const editItem = (index) => {
+        
+        if(error) return;
+        
+        let newData = [...registryData]
+        newData[index] = textInput;
+
+
+        setRegistryData(newData)
+        setTextInput("")
+    }
+    console.log(registryData)
+ 
     return (
         <div>
             <h1>Registry</h1>
@@ -36,6 +55,13 @@ function Registry() {
                 <input type="submit" value="Submit" />
             </form>
             {error ? <span style={{color: "red"}}> Error occurred.</span> : null}
+            {
+                registryData.map((item, index) => {
+                    return (
+                        <li key={index}>{item} <button onClick={() => removeItem(index)}>Remove</button> <button onClick={() => editItem(index)}>Update</button></li>
+                    );
+                })
+            }
         </div>
     );
 }
